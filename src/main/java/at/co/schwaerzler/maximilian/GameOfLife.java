@@ -1,5 +1,7 @@
 package at.co.schwaerzler.maximilian;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashSet;
 
 public class GameOfLife {
@@ -71,7 +73,7 @@ public class GameOfLife {
         aliveCells = newState;
     }
 
-    private static HashSet<Cell> getNeighbors(int x, int y) {
+    private static @NotNull HashSet<Cell> getNeighbors(int x, int y) {
         HashSet<Cell> neighbors = new HashSet<>();
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {

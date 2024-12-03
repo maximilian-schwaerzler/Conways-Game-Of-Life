@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Main" type="Application" factoryName="Application">
+    <option name="ALTERNATIVE_JRE_PATH" value="openjdk-23" />
+    <option name="MAIN_CLASS_NAME" value="at.co.schwaerzler.maximilian.Main" />
+    <module name="Conways-Game-Of-Life.main" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

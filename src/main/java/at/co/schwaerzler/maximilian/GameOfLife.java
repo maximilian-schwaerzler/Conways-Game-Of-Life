@@ -3,14 +3,12 @@ package at.co.schwaerzler.maximilian;
 import java.util.HashSet;
 
 public class GameOfLife {
-    static final int GAME_FIELD_WIDTH = 50;
-    static final int GAME_FIELD_HEIGHT = 50;
+
+    public HashSet<Cell> getAliveCells() {
+        return aliveCells;
+    }
 
     private HashSet<Cell> aliveCells = new HashSet<>();
-
-    public GameOfLife() {
-
-    }
 
     public boolean isAlive(int x, int y) {
         return aliveCells.contains(new Cell(x, y));
@@ -25,23 +23,18 @@ public class GameOfLife {
     }
 
     public void evolve() {
-        HashSet<Cell> newState = new HashSet<>(aliveCells);
+        HashSet<Cell> newState = new HashSet<>();
+        HashSet<Cell> potRevival = new HashSet<>();
         for (Cell oldCell : aliveCells) {
-            HashSet<Cell> neighbors = new HashSet<>();
-            for (int y = 0; y < 3; y++) {
-                for (int x = 0; x < 3; x++) {
-                    if (x == 1 && y == 1) {
-                        continue;
-                    }
-
-                    Cell potNeighbor = new Cell(x, y);
-                    if (aliveCells.contains(potNeighbor)) {
-                        neighbors.add(potNeighbor);
-                    }
+            HashSet<Cell> neighbors = getNeighbors(oldCell.x, oldCell.y);
+            int numNeighbors = 0;
+            for (Cell neighbor : neighbors) {
+                if (aliveCells.contains(neighbor)) {
+                    numNeighbors++;
+                } else {
+                    potRevival.add(neighbor);
                 }
             }
-
-            final int numNeighbors = neighbors.size();
 
             // Any live cell with fewer than two live neighbours dies, as if by underpopulation.
             //noinspection StatementWithEmptyBody
@@ -58,8 +51,38 @@ public class GameOfLife {
             else if (numNeighbors > 3) {
                 // Cell dies, no copy
             }
-
-
         }
+
+        for (Cell it : potRevival) {
+            HashSet<Cell> neighbors = getNeighbors(it.x, it.y);
+            int numNeighbors = 0;
+            for (Cell neighbor : neighbors) {
+                if (aliveCells.contains(neighbor)) {
+                    numNeighbors++;
+                }
+            }
+
+            // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction
+            if (numNeighbors == 3) {
+                newState.add(it);
+            }
+        }
+
+        aliveCells = newState;
+    }
+
+    private static HashSet<Cell> getNeighbors(int x, int y) {
+        HashSet<Cell> neighbors = new HashSet<>();
+        for (int j = 0; j < 3; j++) {
+            for (int i = 0; i < 3; i++) {
+                if (i == 1 && j == 1) {
+                    continue;
+                }
+
+                neighbors.add(new Cell(x + i, y + j));
+            }
+        }
+
+        return neighbors;
     }
 }

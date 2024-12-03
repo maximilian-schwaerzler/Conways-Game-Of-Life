@@ -18,13 +18,13 @@ public class GameFrame extends JFrame implements MouseListener, KeyListener {
             throw new HeadlessException("In headless environment. This is a game, what were you thinking?");
         }
 
-        addMouseListener(this);
-        addKeyListener(this);
         setSize(500, 500);
         setLayout(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setTitle("Conway's Game of Life");
+        addMouseListener(this);
+        addKeyListener(this);
     }
 
     @Override

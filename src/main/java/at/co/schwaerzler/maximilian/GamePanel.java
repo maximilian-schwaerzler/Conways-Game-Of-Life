@@ -1,5 +1,7 @@
 package at.co.schwaerzler.maximilian;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -44,9 +46,11 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         }
     }
 
-    public Cell getCellFromPoint(Point p) {
-        int cellXPos = (int) (((double) p.x / (double) getWidth()) * gameWidth);
-        int cellYPos = (int) (((double) p.y / (double) getHeight()) * gameHeight);
+    public Cell getCellFromPoint(@NotNull Point p) {
+        int cellXPos = (int) (((double) p.x / (double) getWidth()) * (double) (gameWidth - 1));
+        int cellYPos = (int) (((double) p.y / (double) getHeight()) * (double) (gameHeight - 1));
+        System.out.println("Point: [" + p.x + " " + p.y + "]");
+        System.out.println("Point: [" + cellXPos + " " + cellYPos + "]");
         return new Cell(cellXPos, cellYPos);
     }
 
@@ -60,7 +64,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(@NotNull KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             gol.evolve();
             updateWindow();
@@ -73,7 +77,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void mouseClicked(@NotNull MouseEvent e) {
         Cell clickedCell = getCellFromPoint(e.getPoint());
         gol.toggleCell(clickedCell);
         updateWindow();

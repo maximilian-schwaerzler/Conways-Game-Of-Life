@@ -24,6 +24,10 @@ public class GameOfLife {
         }
     }
 
+    public void toggleCell(@NotNull Cell cell) {
+        toggleCell(cell.x, cell.y);
+    }
+
     public void evolve() {
         HashSet<Cell> newState = new HashSet<>();
         HashSet<Cell> potRevival = new HashSet<>();

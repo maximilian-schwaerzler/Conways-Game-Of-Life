@@ -28,6 +28,10 @@ public class GameOfLife {
         toggleCell(cell.x, cell.y);
     }
 
+    public void resetGame() {
+        aliveCells.clear();
+    }
+
     public void evolve() {
         HashSet<Cell> newState = new HashSet<>();
         HashSet<Cell> potRevival = new HashSet<>();
@@ -42,20 +46,9 @@ public class GameOfLife {
                 }
             }
 
-            // Any live cell with fewer than two live neighbours dies, as if by underpopulation.
-            //noinspection StatementWithEmptyBody
-            if (numNeighbors < 2) {
-                // Cell dies, no copy
-            }
-
             // Any live cell with two or three live neighbours lives on to the next generation.
-            else if (numNeighbors == 2 || numNeighbors == 3) {
+            if (numNeighbors == 2 || numNeighbors == 3) {
                 newState.add(oldCell);
-            }
-
-            // Any live cell with more than three live neighbours dies, as if by overpopulation.
-            else if (numNeighbors > 3) {
-                // Cell dies, no copy
             }
         }
 

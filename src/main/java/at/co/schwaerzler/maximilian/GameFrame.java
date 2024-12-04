@@ -10,8 +10,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class GameFrame extends JFrame implements MouseListener, KeyListener {
-    public static final int DEFAULT_GAME_WIDTH = 10;
-    public static final int DEFAULT_GAME_HEIGHT = 10;
+    public static final int DEFAULT_GAME_WIDTH = 50;
+    public static final int DEFAULT_GAME_HEIGHT = 50;
 
 //    private GameOfLife game;
     private GamePanel gp;
@@ -59,7 +59,7 @@ public class GameFrame extends JFrame implements MouseListener, KeyListener {
     public void mouseClicked(@NotNull MouseEvent e) {
         Cell clickedCell = getCellFromPoint(e.getPoint());
         gp.gol.toggleCell(clickedCell);
-        System.out.println(gp.gol.getAliveCells());
+        // System.out.println(gp.gol.getAliveCells());
         updateWindow();
     }
 
@@ -94,7 +94,10 @@ public class GameFrame extends JFrame implements MouseListener, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            gp.gol.evolve();
+            updateWindow();
+        }
     }
 
     @Override

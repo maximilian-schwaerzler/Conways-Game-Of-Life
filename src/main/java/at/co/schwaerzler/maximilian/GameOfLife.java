@@ -79,9 +79,9 @@ public class GameOfLife {
 
     private static @NotNull HashSet<Cell> getNeighbors(int x, int y) {
         HashSet<Cell> neighbors = new HashSet<>();
-        for (int j = 0; j < 3; j++) {
-            for (int i = 0; i < 3; i++) {
-                if (i == 1 && j == 1) {
+        for (int j = -1; j < 2; j++) {
+            for (int i = -1; i < 2; i++) {
+                if (i == 0 && j == 0) {
                     continue;
                 }
 

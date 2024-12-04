@@ -18,8 +18,6 @@ public class GameFrame extends JFrame {
             throw new HeadlessException("In headless environment. This is a game, what were you thinking?");
         }
 
-
-        // setSize(500, 500);
         gp = new GamePanel(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, DEFAULT_GAME_WIDTH, DEFAULT_GAME_HEIGHT);
         setLayout(new BorderLayout());
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

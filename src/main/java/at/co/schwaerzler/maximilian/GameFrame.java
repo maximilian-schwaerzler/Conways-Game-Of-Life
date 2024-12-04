@@ -10,10 +10,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class GameFrame extends JFrame implements MouseListener, KeyListener {
-    public static final int DEFAULT_GAME_WIDTH = 50;
-    public static final int DEFAULT_GAME_HEIGHT = 50;
+    public static final int DEFAULT_GAME_WIDTH = 10;
+    public static final int DEFAULT_GAME_HEIGHT = 10;
 
-    private GameOfLife game;
+//    private GameOfLife game;
     private GamePanel gp;
 
     public GameFrame() throws HeadlessException {
@@ -25,7 +25,7 @@ public class GameFrame extends JFrame implements MouseListener, KeyListener {
 
 
         // setSize(500, 500);
-        gp = new GamePanel(500, 500);
+        gp = new GamePanel(500, 500, DEFAULT_GAME_WIDTH, DEFAULT_GAME_HEIGHT);
         setLayout(new BorderLayout());
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Conway's Game of Life");
@@ -37,20 +37,18 @@ public class GameFrame extends JFrame implements MouseListener, KeyListener {
 
         getContentPane().add(gp);
         pack();
-        game = new GameOfLife();
+//        game = new GameOfLife();
     }
 
     public Cell getCellFromPoint(Point p) {
-        int cellXPos = (getWidth() / DEFAULT_GAME_WIDTH) * p.x;
-        int cellYPos = getHeight() / DEFAULT_GAME_HEIGHT * p.y;
+        int cellXPos = (int) (((double)p.x / (double)gp.getWidth()) * DEFAULT_GAME_WIDTH);
+        int cellYPos = (int) (((double)p.y / (double)gp.getHeight()) * DEFAULT_GAME_HEIGHT);
         return new Cell(cellXPos, cellYPos);
     }
 
     // Update the window with the game info
     public void updateWindow() {
-        for (Cell cell : game.getAliveCells()) {
-            // TODO
-        }
+       gp.paintComponent(getGraphics());
     }
 
     /*
@@ -60,7 +58,9 @@ public class GameFrame extends JFrame implements MouseListener, KeyListener {
     @Override
     public void mouseClicked(@NotNull MouseEvent e) {
         Cell clickedCell = getCellFromPoint(e.getPoint());
-        game.toggleCell(clickedCell);
+        gp.gol.toggleCell(clickedCell);
+        System.out.println(gp.gol.getAliveCells());
+        updateWindow();
     }
 
     @Override

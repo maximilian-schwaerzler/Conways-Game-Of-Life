@@ -17,13 +17,11 @@ public class Main {
         Options options = new Options();
         Option gameSizeOpt = Option.builder(GAME_SIZE_ARG_NAME)
                 .hasArg(true)
-//                .optionalArg(true)
                 .desc("square size of the game field")
                 .type(Integer.class)
                 .build();
         Option windowSizeOpt = Option.builder(WINDOW_SIZE_ARG_NAME)
                 .hasArg(true)
-//                .optionalArg(true)
                 .desc("square size of the window")
                 .type(Integer.class)
                 .build();

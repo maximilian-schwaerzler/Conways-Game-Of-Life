@@ -10,32 +10,24 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class GamePanel extends JPanel implements MouseListener, KeyListener {
-    private final int windowWidth;
-    private final int windowHeight;
-
-    private final int gameWidth;
-    private final int gameHeight;
-
-    private final int cellW;
-    private final int cellH;
+    private final int windowSize;
+    private final int gameSize;
+    private final int cellSize;
 
     public GameOfLife gol;
 
     private boolean isPaused = true;
     private final Timer gameTickTimer;
 
-    public GamePanel(int windowW, int windowH, int gameW, int gameH) {
+    public GamePanel(int gameSize, int windowSize) {
         setBackground(Color.BLACK);
         addMouseListener(this);
         addKeyListener(this);
         setFocusable(true);
         requestFocus();
-        windowWidth = windowW;
-        windowHeight = windowH;
-        gameWidth = gameW;
-        gameHeight = gameH;
-        cellW = windowW / gameWidth;
-        cellH = windowH / gameHeight;
+        this.windowSize = windowSize;
+        this.gameSize = gameSize;
+        cellSize = windowSize / this.gameSize;
         gol = new GameOfLife();
 
         gameTickTimer = new Timer(50, _ -> gameTick());
@@ -45,7 +37,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(windowWidth, windowHeight);
+        return new Dimension(windowSize, windowSize);
     }
 
     @Override
@@ -53,13 +45,13 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         super.paintComponent(g);
         g.setColor(Color.WHITE);
         for (Cell cell : gol.getAliveCells()) {
-            g.fillRect(cell.x * cellW, cell.y * cellH, cellW, cellH);
+            g.fillRect(cell.x * cellSize, cell.y * cellSize, cellSize, cellSize);
         }
     }
 
     public Cell getCellFromPoint(@NotNull Point p) {
-        int cellXPos = (int) (((double) p.x / (double) getWidth()) * (double) gameWidth);
-        int cellYPos = (int) (((double) p.y / (double) getHeight()) * gameHeight);
+        int cellXPos = (int) (((double) p.x / (double) getWidth()) * gameSize);
+        int cellYPos = (int) (((double) p.y / (double) getHeight()) * gameSize);
         return new Cell(cellXPos, cellYPos);
     }
 

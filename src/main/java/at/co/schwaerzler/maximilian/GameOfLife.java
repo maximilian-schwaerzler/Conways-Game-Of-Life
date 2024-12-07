@@ -7,6 +7,21 @@ import java.util.HashSet;
 public class GameOfLife {
     private HashSet<Cell> aliveCells = new HashSet<>();
 
+    private static @NotNull HashSet<Cell> getNeighbors(int x, int y) {
+        HashSet<Cell> neighbors = new HashSet<>();
+        for (int j = -1; j < 2; j++) {
+            for (int i = -1; i < 2; i++) {
+                if (i == 0 && j == 0) {
+                    continue;
+                }
+
+                neighbors.add(new Cell(x + i, y + j));
+            }
+        }
+
+        return neighbors;
+    }
+
     public void loadState(HashSet<Cell> state) {
         aliveCells = state;
     }
@@ -71,20 +86,5 @@ public class GameOfLife {
         }
 
         aliveCells = newState;
-    }
-
-    private static @NotNull HashSet<Cell> getNeighbors(int x, int y) {
-        HashSet<Cell> neighbors = new HashSet<>();
-        for (int j = -1; j < 2; j++) {
-            for (int i = -1; i < 2; i++) {
-                if (i == 0 && j == 0) {
-                    continue;
-                }
-
-                neighbors.add(new Cell(x + i, y + j));
-            }
-        }
-
-        return neighbors;
     }
 }

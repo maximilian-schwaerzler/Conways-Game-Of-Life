@@ -11,10 +11,6 @@ import java.util.HashSet;
 public interface IStatePersister {
     String[] LIFE_106_FILE_EXT = {"life", "lif"};
 
-    void saveStateToFile(HashSet<Cell> state, Path file) throws IOException, IllegalArgumentException;
-
-    HashSet<Cell> loadStateFromFile(Path file) throws IOException, IllegalArgumentException;
-
     static IStatePersister getPersisterForFile(Path file) throws IllegalArgumentException {
         String ext = FilenameUtils.getExtension(file.getFileName().toString()).toLowerCase();
         if (Arrays.asList(LIFE_106_FILE_EXT).contains(ext)) {
@@ -23,4 +19,8 @@ public interface IStatePersister {
 
         throw new IllegalArgumentException("Couldn't match File Loader from extension: " + ext);
     }
+
+    void saveStateToFile(HashSet<Cell> state, Path file) throws IOException, IllegalArgumentException;
+
+    HashSet<Cell> loadStateFromFile(Path file) throws IOException, IllegalArgumentException;
 }

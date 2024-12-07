@@ -15,11 +15,9 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private final int windowSize;
     private final int gameSize;
     private final int cellSize;
-
-    public GameOfLife gol;
-
-    private boolean isPaused = true;
     private final Timer gameTickTimer;
+    public GameOfLife gol;
+    private boolean isPaused = true;
 
     public GamePanel(int gameSize, int windowSize, @Nullable HashSet<Cell> initialState) {
         setBackground(Color.BLACK);
@@ -33,6 +31,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         gol = new GameOfLife();
         if (initialState != null) {
             gol.loadState(initialState);
+            repaint();
         }
 
         gameTickTimer = new Timer(50, _ -> gameTick());

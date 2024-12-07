@@ -2,13 +2,11 @@ package at.co.schwaerzler.maximilian;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
-
 public class GameOfLife {
-    private HashSet<Cell> aliveCells = new HashSet<>();
+    private GameState aliveCells = new GameState();
 
-    private static @NotNull HashSet<Cell> getNeighbors(int x, int y) {
-        HashSet<Cell> neighbors = new HashSet<>();
+    private static @NotNull GameState getNeighbors(int x, int y) {
+        GameState neighbors = new GameState();
         for (int j = -1; j < 2; j++) {
             for (int i = -1; i < 2; i++) {
                 if (i == 0 && j == 0) {
@@ -22,11 +20,11 @@ public class GameOfLife {
         return neighbors;
     }
 
-    public void loadState(HashSet<Cell> state) {
+    public void loadState(GameState state) {
         aliveCells = state;
     }
 
-    public HashSet<Cell> getAliveCells() {
+    public GameState getAliveCells() {
         return aliveCells;
     }
 
@@ -51,10 +49,10 @@ public class GameOfLife {
     }
 
     public void evolve() {
-        HashSet<Cell> newState = new HashSet<>();
-        HashSet<Cell> potRevival = new HashSet<>();
+        GameState newState = new GameState();
+        GameState potRevival = new GameState();
         for (Cell oldCell : aliveCells) {
-            HashSet<Cell> neighbors = getNeighbors(oldCell.x(), oldCell.y());
+            GameState neighbors = getNeighbors(oldCell.x(), oldCell.y());
             int numNeighbors = 0;
             for (Cell neighbor : neighbors) {
                 if (aliveCells.contains(neighbor)) {
@@ -71,7 +69,7 @@ public class GameOfLife {
         }
 
         for (Cell it : potRevival) {
-            HashSet<Cell> neighbors = getNeighbors(it.x(), it.y());
+            GameState neighbors = getNeighbors(it.x(), it.y());
             int numNeighbors = 0;
             for (Cell neighbor : neighbors) {
                 if (aliveCells.contains(neighbor)) {

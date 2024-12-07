@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.HashSet;
 
 public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private final int windowSize;
@@ -19,7 +18,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     public GameOfLife gol;
     private boolean isPaused = true;
 
-    public GamePanel(int gameSize, int windowSize, @Nullable HashSet<Cell> initialState) {
+    public GamePanel(int gameSize, int windowSize, @Nullable GameState initialState) {
         setBackground(Color.BLACK);
         addMouseListener(this);
         addKeyListener(this);
@@ -30,7 +29,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         cellSize = windowSize / this.gameSize;
         gol = new GameOfLife();
         if (initialState != null) {
-            gol.loadState(initialState);
+            gol.loadState(initialState.offset(10, 10));
             repaint();
         }
 

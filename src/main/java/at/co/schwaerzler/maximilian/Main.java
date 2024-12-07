@@ -5,7 +5,6 @@ import org.apache.commons.cli.*;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.HashSet;
 
 public class Main {
     public static final int DEFAULT_GAME_SIZE = 50;
@@ -72,7 +71,7 @@ public class Main {
                 }
             }
 
-            HashSet<Cell> initialState = null;
+            GameState initialState = null;
 
             if (line.hasOption(STATE_FILE_ARG_NAME)) {
                 Path stateFile = line.getParsedOptionValue(STATE_FILE_ARG_NAME);

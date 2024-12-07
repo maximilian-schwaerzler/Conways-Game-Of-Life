@@ -4,10 +4,9 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashSet;
 
 public class GameFrame extends JFrame {
-    public GameFrame(int gameSize, int windowSize, @Nullable HashSet<Cell> initialState) throws HeadlessException {
+    public GameFrame(int gameSize, int windowSize, @Nullable GameState initialState) throws HeadlessException {
         super();
 
         if (GraphicsEnvironment.isHeadless()) {

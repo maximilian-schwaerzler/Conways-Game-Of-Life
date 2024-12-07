@@ -1,20 +1,20 @@
 package at.co.schwaerzler.maximilian.StatePersisters;
 
 import at.co.schwaerzler.maximilian.Cell;
+import at.co.schwaerzler.maximilian.GameState;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Objects;
 
 public class Life106StatePersister implements IStatePersister {
     private static final String FILE_HEADER = "#Life 1.06";
 
     @Override
-    public void saveStateToFile(HashSet<Cell> state, Path file) throws IOException, IllegalArgumentException {
+    public void saveStateToFile(GameState state, Path file) throws IOException, IllegalArgumentException {
         if (state.isEmpty()) {
             throw new IllegalArgumentException("State is empty, not saving file");
         }
@@ -29,12 +29,12 @@ public class Life106StatePersister implements IStatePersister {
     }
 
     @Override
-    public HashSet<Cell> loadStateFromFile(Path file) throws IOException, IllegalArgumentException {
+    public GameState loadStateFromFile(Path file) throws IOException, IllegalArgumentException {
         if (Files.notExists(file)) {
             throw new IllegalArgumentException("The file path does not exist: " + file.toAbsolutePath());
         }
 
-        HashSet<Cell> newState = new HashSet<>();
+        GameState newState = new GameState();
 
         try (BufferedReader bufferedReader = Files.newBufferedReader(file)) {
             String header = bufferedReader.readLine();

@@ -1,5 +1,6 @@
 package at.co.schwaerzler.maximilian;
 
+import at.co.schwaerzler.maximilian.StatePersisters.IStatePersister;
 import org.apache.commons.cli.*;
 
 import java.io.IOException;

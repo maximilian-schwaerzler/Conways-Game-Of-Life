@@ -50,7 +50,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         super.paintComponent(g);
         g.setColor(Color.WHITE);
         for (Cell cell : gol.getAliveCells()) {
-            g.fillRect(cell.x * cellSize, cell.y * cellSize, cellSize, cellSize);
+            g.fillRect(cell.x() * cellSize, cell.y() * cellSize, cellSize, cellSize);
         }
     }
 

@@ -1,4 +1,6 @@
-package at.co.schwaerzler.maximilian;
+package at.co.schwaerzler.maximilian.StatePersisters;
+
+import at.co.schwaerzler.maximilian.Cell;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,7 +22,7 @@ public class Life106StatePersister implements IStatePersister {
         ArrayList<String> lines = new ArrayList<>(state.size() + 1);
         lines.add(FILE_HEADER);
         for (Cell cell : state) {
-            lines.add(cell.x + " " + cell.y);
+            lines.add(cell.x() + " " + cell.y());
         }
 
         Files.write(file, lines);
@@ -45,7 +47,7 @@ public class Life106StatePersister implements IStatePersister {
                 if (line.isEmpty()) continue;
                 String[] coords = line.split(" ");
                 if (coords.length != 2) {
-                    throw new IOException("Error reading file");
+                    throw new IOException("Error in file format, aborting");
                 }
 
                 try {

@@ -28,7 +28,7 @@ public class GameOfLife {
     }
 
     public void toggleCell(@NotNull Cell cell) {
-        toggleCell(cell.x, cell.y);
+        toggleCell(cell.x(), cell.y());
     }
 
     public void resetGame() {
@@ -39,7 +39,7 @@ public class GameOfLife {
         HashSet<Cell> newState = new HashSet<>();
         HashSet<Cell> potRevival = new HashSet<>();
         for (Cell oldCell : aliveCells) {
-            HashSet<Cell> neighbors = getNeighbors(oldCell.x, oldCell.y);
+            HashSet<Cell> neighbors = getNeighbors(oldCell.x(), oldCell.y());
             int numNeighbors = 0;
             for (Cell neighbor : neighbors) {
                 if (aliveCells.contains(neighbor)) {
@@ -56,7 +56,7 @@ public class GameOfLife {
         }
 
         for (Cell it : potRevival) {
-            HashSet<Cell> neighbors = getNeighbors(it.x, it.y);
+            HashSet<Cell> neighbors = getNeighbors(it.x(), it.y());
             int numNeighbors = 0;
             for (Cell neighbor : neighbors) {
                 if (aliveCells.contains(neighbor)) {

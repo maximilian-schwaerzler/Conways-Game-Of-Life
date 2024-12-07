@@ -1,5 +1,6 @@
-package at.co.schwaerzler.maximilian;
+package at.co.schwaerzler.maximilian.StatePersisters;
 
+import at.co.schwaerzler.maximilian.Cell;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ public interface IStatePersister {
     HashSet<Cell> loadStateFromFile(Path file) throws IOException, IllegalArgumentException;
 
     static IStatePersister getPersisterForFile(Path file) throws IllegalArgumentException {
-        String ext = FilenameUtils.getExtension(file.getFileName().toString());
+        String ext = FilenameUtils.getExtension(file.getFileName().toString()).toLowerCase();
         if (Arrays.asList(LIFE_106_FILE_EXT).contains(ext)) {
             return new Life106StatePersister();
         }

@@ -1,11 +1,13 @@
 package at.co.schwaerzler.maximilian;
 
+import org.jetbrains.annotations.Nullable;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashSet;
 
 public class GameFrame extends JFrame {
-
-    public GameFrame(int gameSize, int windowSize) throws HeadlessException {
+    public GameFrame(int gameSize, int windowSize, @Nullable HashSet<Cell> initialState) throws HeadlessException {
         super();
 
         if (GraphicsEnvironment.isHeadless()) {
@@ -16,7 +18,7 @@ public class GameFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(100, 100));
         setResizable(false);
-        GamePanel gp = new GamePanel(gameSize, windowSize);
+        GamePanel gp = new GamePanel(gameSize, windowSize, initialState);
         add(gp);
         pack();
         setLocationRelativeTo(null);

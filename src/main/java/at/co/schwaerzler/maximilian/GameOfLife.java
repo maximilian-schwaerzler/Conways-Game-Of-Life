@@ -5,12 +5,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 
 public class GameOfLife {
+    private HashSet<Cell> aliveCells = new HashSet<>();
+
+    public void loadState(HashSet<Cell> state) {
+        aliveCells = state;
+    }
 
     public HashSet<Cell> getAliveCells() {
         return aliveCells;
     }
-
-    private HashSet<Cell> aliveCells = new HashSet<>();
 
     public boolean isAlive(int x, int y) {
         return aliveCells.contains(new Cell(x, y));

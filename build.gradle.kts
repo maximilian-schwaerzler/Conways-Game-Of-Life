@@ -14,6 +14,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     implementation("org.jetbrains:annotations:24.0.0")
     implementation("commons-cli:commons-cli:1.9.0")
+    implementation("commons-io:commons-io:2.18.0")
 }
 
 tasks.test {

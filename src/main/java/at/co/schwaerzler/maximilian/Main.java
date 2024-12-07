@@ -2,6 +2,10 @@ package at.co.schwaerzler.maximilian;
 
 import org.apache.commons.cli.*;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.HashSet;
+
 public class Main {
     public static final int DEFAULT_GAME_SIZE = 50;
     public static final int DEFAULT_WINDOW_SIZE = 800;
@@ -10,26 +14,36 @@ public class Main {
     public static final String WINDOW_SIZE_ARG_NAME = "window-size";
     public static final String SHORT_HELP_ARG_NAME = "h";
     public static final String LONG_HELP_ARG_NAME = "help";
+    public static final String STATE_FILE_ARG_NAME = "f";
 
     public static void main(String[] args) {
         CommandLineParser parser = new DefaultParser();
 
         Options options = new Options();
-        Option gameSizeOpt = Option.builder(GAME_SIZE_ARG_NAME)
+        Option gameSizeOpt = Option.builder()
+                .longOpt(GAME_SIZE_ARG_NAME)
                 .hasArg(true)
                 .desc("square size of the game field")
                 .type(Integer.class)
                 .build();
-        Option windowSizeOpt = Option.builder(WINDOW_SIZE_ARG_NAME)
+        Option windowSizeOpt = Option.builder()
+                .longOpt(WINDOW_SIZE_ARG_NAME)
                 .hasArg(true)
                 .desc("square size of the window")
                 .type(Integer.class)
                 .build();
 
+        Option stateFileOpt = Option.builder(STATE_FILE_ARG_NAME)
+                .hasArg(true)
+                .desc("a state file from which the initial state of the game will be set")
+                .type(Path.class)
+                .build();
 
+
+        options.addOption(SHORT_HELP_ARG_NAME, LONG_HELP_ARG_NAME, false, "show this help");
+        options.addOption(stateFileOpt);
         options.addOption(gameSizeOpt);
         options.addOption(windowSizeOpt);
-        options.addOption(SHORT_HELP_ARG_NAME, LONG_HELP_ARG_NAME, false, "show this help");
 
         int gameSize = DEFAULT_GAME_SIZE;
         int windowSize = DEFAULT_WINDOW_SIZE;
@@ -57,10 +71,24 @@ public class Main {
                 }
             }
 
-            GameFrame gf = new GameFrame(gameSize, windowSize);
+            HashSet<Cell> initialState = null;
+
+            if (line.hasOption(STATE_FILE_ARG_NAME)) {
+                Path stateFile = line.getParsedOptionValue(STATE_FILE_ARG_NAME);
+                try {
+                    IStatePersister loader = IStatePersister.getPersisterForFile(stateFile);
+                    initialState = loader.loadStateFromFile(stateFile);
+                } catch (IllegalArgumentException e) {
+                    System.err.println("Error loading file: " + e.getMessage());
+                } catch (IOException e) {
+                    System.err.println("Error reading file: " + e.getMessage());
+                }
+            }
+
+            GameFrame gf = new GameFrame(gameSize, windowSize, initialState);
             gf.setVisible(true);
         } catch (ParseException e) {
-            System.err.println("Parsing failed.  Reason: " + e.getMessage());
+            System.err.println("Parsing failed. Reason: " + e.getMessage());
         }
     }
 }

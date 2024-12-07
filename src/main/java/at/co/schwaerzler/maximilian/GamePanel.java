@@ -1,6 +1,7 @@
 package at.co.schwaerzler.maximilian;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashSet;
 
 public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private final int windowSize;
@@ -19,7 +21,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private boolean isPaused = true;
     private final Timer gameTickTimer;
 
-    public GamePanel(int gameSize, int windowSize) {
+    public GamePanel(int gameSize, int windowSize, @Nullable HashSet<Cell> initialState) {
         setBackground(Color.BLACK);
         addMouseListener(this);
         addKeyListener(this);
@@ -29,6 +31,9 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         this.gameSize = gameSize;
         cellSize = windowSize / this.gameSize;
         gol = new GameOfLife();
+        if (initialState != null) {
+            gol.loadState(initialState);
+        }
 
         gameTickTimer = new Timer(50, _ -> gameTick());
         gameTickTimer.setInitialDelay(0);

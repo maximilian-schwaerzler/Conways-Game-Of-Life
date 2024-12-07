@@ -3,7 +3,6 @@
     <option name="ALTERNATIVE_JRE_PATH" value="openjdk-23" />
     <option name="MAIN_CLASS_NAME" value="at.co.schwaerzler.maximilian.Main" />
     <module name="Conways-Game-Of-Life.main" />
-    <option name="PROGRAM_PARAMETERS" value="-game-size 20" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

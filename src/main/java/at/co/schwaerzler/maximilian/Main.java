@@ -53,7 +53,7 @@ public class Main {
 
             if (line.hasOption(SHORT_HELP_ARG_NAME) || line.hasOption(LONG_HELP_ARG_NAME)) {
                 HelpFormatter formatter = new HelpFormatter();
-                formatter.printHelp("Conways-Game-Of-Life.jar", options);
+                formatter.printHelp("GameOfLife.jar", options);
                 return;
             }
 

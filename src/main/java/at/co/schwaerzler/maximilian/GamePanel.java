@@ -1,5 +1,8 @@
 package at.co.schwaerzler.maximilian;
 
+import at.co.schwaerzler.maximilian.StatePersisters.IStatePersister;
+import at.co.schwaerzler.maximilian.StatePersisters.Life106StatePersister;
+import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,6 +13,11 @@ import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+
+import static at.co.schwaerzler.maximilian.ApplicationConstants.DEFAULT_FILE_EXT;
+import static at.co.schwaerzler.maximilian.ApplicationConstants.LIFE_106_FILE_EXT;
 
 public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private final int windowSize;
@@ -112,16 +120,37 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 
 //        fc.setAcceptAllFileFilterUsed(false);
-        FileNameExtensionFilter life106Filter = new FileNameExtensionFilter("Life 1.06", "life", "lif");
+        FileNameExtensionFilter life106Filter = new FileNameExtensionFilter("Life 1.06", LIFE_106_FILE_EXT);
         fc.addChoosableFileFilter(life106Filter);
 
         fc.setFileFilter(life106Filter);
         int returnVal = fc.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
-            System.out.println("Saving to: " + file.getAbsolutePath());
 
             FileFilter usedFileFilter = fc.getFileFilter();
+            Path selectedFilePath;
+            if (FilenameUtils.getExtension(file.getName()).isEmpty()) {
+                if (usedFileFilter instanceof FileNameExtensionFilter) {
+                    selectedFilePath = Path.of(file.getAbsolutePath() + "." + ((FileNameExtensionFilter) usedFileFilter).getExtensions()[0]);
+                } else {
+                    selectedFilePath = Path.of(file.getAbsolutePath() + "." + DEFAULT_FILE_EXT);
+                }
+            } else {
+                selectedFilePath = file.toPath();
+            }
+
+            IStatePersister statePersister = IStatePersister.getPersisterForFileExtension(selectedFilePath);
+            if (statePersister == null) {
+                statePersister = new Life106StatePersister();
+            }
+
+            try {
+                statePersister.saveStateToFile(currentState, selectedFilePath);
+                System.out.println("Saved state to: " + selectedFilePath);
+            } catch (IOException e) {
+                System.err.println("Failed to save the current state to a file: " + e.getMessage());
+            }
         }
     }
 

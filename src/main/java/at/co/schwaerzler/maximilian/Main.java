@@ -72,7 +72,11 @@ public class Main {
                 Path stateFile = line.getParsedOptionValue(STATE_FILE_ARG_NAME);
                 try {
                     IStatePersister loader = IStatePersister.getPersisterForFileExtension(stateFile);
-                    initialState = loader.loadStateFromFile(stateFile);
+                    if (loader != null) {
+                        initialState = loader.loadStateFromFile(stateFile);
+                    } else {
+                        System.err.println("Could not find the right loader for this file. Did you use the right file extension?");
+                    }
                 } catch (IllegalArgumentException e) {
                     System.err.println("Error loading file: " + e.getMessage());
                 } catch (IOException e) {

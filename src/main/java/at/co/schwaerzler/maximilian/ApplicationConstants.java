@@ -6,6 +6,7 @@ public final class ApplicationConstants {
 
     public static final int DEFAULT_GAME_SIZE = 50;
     public static final int DEFAULT_WINDOW_SIZE = 800;
+    public static final String DEFAULT_FILE_EXT = "life";
 
     public static final String GAME_SIZE_ARG_NAME = "game-size";
     public static final String WINDOW_SIZE_ARG_NAME = "window-size";

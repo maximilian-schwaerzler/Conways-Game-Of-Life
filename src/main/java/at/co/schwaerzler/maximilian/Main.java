@@ -3,6 +3,7 @@ package at.co.schwaerzler.maximilian;
 import at.co.schwaerzler.maximilian.StatePersisters.IStatePersister;
 import org.apache.commons.cli.*;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -76,7 +77,7 @@ public class Main {
             if (line.hasOption(STATE_FILE_ARG_NAME)) {
                 Path stateFile = line.getParsedOptionValue(STATE_FILE_ARG_NAME);
                 try {
-                    IStatePersister loader = IStatePersister.getPersisterForFile(stateFile);
+                    IStatePersister loader = IStatePersister.getPersisterForFileExtension(stateFile);
                     initialState = loader.loadStateFromFile(stateFile);
                 } catch (IllegalArgumentException e) {
                     System.err.println("Error loading file: " + e.getMessage());
@@ -85,8 +86,13 @@ public class Main {
                 }
             }
 
-            GameFrame gf = new GameFrame(gameSize, windowSize, initialState);
-            gf.setVisible(true);
+            int finalGameSize = gameSize;
+            int finalWindowSize = windowSize;
+            GameState finalInitialState = initialState;
+            SwingUtilities.invokeLater(() -> {
+                GameFrame gf = new GameFrame(finalGameSize, finalWindowSize, finalInitialState);
+                gf.setVisible(true);
+            });
         } catch (ParseException e) {
             System.err.println("Parsing failed. Reason: " + e.getMessage());
         }

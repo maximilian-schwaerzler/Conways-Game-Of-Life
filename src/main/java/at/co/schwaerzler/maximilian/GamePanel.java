@@ -4,11 +4,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
+import java.io.File;
 
 public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private final int windowSize;
@@ -35,7 +36,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
         gameTickTimer = new Timer(50, _ -> gameTick());
         gameTickTimer.setInitialDelay(0);
-        setPaused(isPaused);
+        setIsPaused(isPaused);
     }
 
     @Override
@@ -76,7 +77,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         }
     }
 
-    private void setPaused(boolean value) {
+    private void setIsPaused(boolean value) {
         isPaused = value;
         if (isPaused) {
             gameTickTimer.stop();
@@ -101,6 +102,26 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             togglePause();
         } else if (keyCode == KeyEvent.VK_R) {
             gol.resetGame();
+        } else if (keyCode == KeyEvent.VK_S && e.getModifiersEx() == InputEvent.CTRL_DOWN_MASK) {
+            saveCurrentState();
+        }
+    }
+
+    private void saveCurrentState() {
+        GameState currentState = gol.getAliveCells();
+        JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+
+//        fc.setAcceptAllFileFilterUsed(false);
+        FileNameExtensionFilter life106Filter = new FileNameExtensionFilter("Life 1.06", "life", "lif");
+        fc.addChoosableFileFilter(life106Filter);
+
+        fc.setFileFilter(life106Filter);
+        int returnVal = fc.showSaveDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            System.out.println("Saving to: " + file.getAbsolutePath());
+
+            FileFilter usedFileFilter = fc.getFileFilter();
         }
     }
 

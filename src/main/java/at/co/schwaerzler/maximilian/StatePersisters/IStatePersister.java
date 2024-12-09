@@ -10,7 +10,7 @@ import java.util.Arrays;
 public interface IStatePersister {
     String[] LIFE_106_FILE_EXT = {"life", "lif"};
 
-    static IStatePersister getPersisterForFile(Path file) throws IllegalArgumentException {
+    static IStatePersister getPersisterForFileExtension(Path file) throws IllegalArgumentException {
         String ext = FilenameUtils.getExtension(file.getFileName().toString()).toLowerCase();
         if (Arrays.asList(LIFE_106_FILE_EXT).contains(ext)) {
             return new Life106StatePersister();

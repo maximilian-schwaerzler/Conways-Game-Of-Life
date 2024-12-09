@@ -7,8 +7,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
 
+import static at.co.schwaerzler.maximilian.ApplicationConstants.LIFE_106_FILE_EXT;
+
 public interface IStatePersister {
-    String[] LIFE_106_FILE_EXT = {"life", "lif"};
 
     static IStatePersister getPersisterForFileExtension(Path file) throws IllegalArgumentException {
         String ext = FilenameUtils.getExtension(file.getFileName().toString()).toLowerCase();

@@ -7,15 +7,9 @@ import javax.swing.*;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class Main {
-    public static final int DEFAULT_GAME_SIZE = 50;
-    public static final int DEFAULT_WINDOW_SIZE = 800;
+import static at.co.schwaerzler.maximilian.ApplicationConstants.*;
 
-    public static final String GAME_SIZE_ARG_NAME = "game-size";
-    public static final String WINDOW_SIZE_ARG_NAME = "window-size";
-    public static final String SHORT_HELP_ARG_NAME = "h";
-    public static final String LONG_HELP_ARG_NAME = "help";
-    public static final String STATE_FILE_ARG_NAME = "f";
+public class Main {
 
     public static void main(String[] args) {
         CommandLineParser parser = new DefaultParser();

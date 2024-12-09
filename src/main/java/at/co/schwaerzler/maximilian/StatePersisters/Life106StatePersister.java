@@ -10,8 +10,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static at.co.schwaerzler.maximilian.ApplicationConstants.LIFE_FILE_HEADER;
+
 public class Life106StatePersister implements IStatePersister {
-    private static final String FILE_HEADER = "#Life 1.06";
 
     @Override
     public void saveStateToFile(GameState state, Path file) throws IOException, IllegalArgumentException {
@@ -20,7 +21,7 @@ public class Life106StatePersister implements IStatePersister {
         }
 
         ArrayList<String> lines = new ArrayList<>(state.size() + 1);
-        lines.add(FILE_HEADER);
+        lines.add(LIFE_FILE_HEADER);
         for (Cell cell : state) {
             lines.add(cell.x() + " " + cell.y());
         }
@@ -38,7 +39,7 @@ public class Life106StatePersister implements IStatePersister {
 
         try (BufferedReader bufferedReader = Files.newBufferedReader(file)) {
             String header = bufferedReader.readLine();
-            if (!Objects.equals(header, FILE_HEADER)) {
+            if (!Objects.equals(header, LIFE_FILE_HEADER)) {
                 throw new IllegalArgumentException("The file is not a valid Life 1.06 file");
             }
 

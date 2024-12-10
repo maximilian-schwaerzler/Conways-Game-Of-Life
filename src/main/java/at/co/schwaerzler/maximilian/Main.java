@@ -11,6 +11,11 @@ import static at.co.schwaerzler.maximilian.ApplicationConstants.*;
 
 public class Main {
 
+    /**
+     * The entry function to the game. Parses the arguments and maybe loads the initial state.
+     *
+     * @param args The command line arguments. Very important, do not delete.
+     */
     public static void main(String[] args) {
         CommandLineParser parser = new DefaultParser();
 

@@ -11,6 +11,9 @@ import java.util.Arrays;
 
 import static at.co.schwaerzler.maximilian.ApplicationConstants.LIFE_106_FILE_EXT;
 
+/**
+ * An interface for all kinds of state persisters, a.k.a. saving and loading/parsing of state files.
+ */
 public interface IStatePersister {
 
     /**
@@ -27,7 +30,23 @@ public interface IStatePersister {
         return null;
     }
 
+    /**
+     * Saves the current game state to a file
+     *
+     * @param state The current game state
+     * @param file  The file to save the state to
+     * @throws IOException              What it says
+     * @throws IllegalArgumentException Same
+     */
     void saveStateToFile(GameState state, Path file) throws IOException, IllegalArgumentException;
 
+    /**
+     * Loads the game state from a file
+     *
+     * @param file The file to load from
+     * @return The new game state
+     * @throws IOException              e.g. error when opening the file
+     * @throws IllegalArgumentException e.g. when it's the wrong file type
+     */
     GameState loadStateFromFile(Path file) throws IOException, IllegalArgumentException;
 }

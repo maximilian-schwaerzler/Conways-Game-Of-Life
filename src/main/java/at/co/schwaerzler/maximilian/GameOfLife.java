@@ -2,6 +2,9 @@ package at.co.schwaerzler.maximilian;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * The actual game logic.
+ */
 public class GameOfLife {
     private GameState aliveCells = new GameState();
 

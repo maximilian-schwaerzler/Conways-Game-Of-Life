@@ -5,6 +5,9 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The frame that represents the game window.
+ */
 public class GameFrame extends JFrame {
     public GameFrame(int gameSize, int windowSize, @Nullable GameState initialState) throws HeadlessException {
         super();

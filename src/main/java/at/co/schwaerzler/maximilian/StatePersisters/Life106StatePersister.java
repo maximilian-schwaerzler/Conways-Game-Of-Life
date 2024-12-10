@@ -12,6 +12,9 @@ import java.util.Objects;
 
 import static at.co.schwaerzler.maximilian.ApplicationConstants.LIFE_FILE_HEADER;
 
+/**
+ * A state persister for the <a href="https://conwaylife.com/wiki/Life_1.06">Life 1.06</a> file format.
+ */
 public class Life106StatePersister implements IStatePersister {
 
     @Override

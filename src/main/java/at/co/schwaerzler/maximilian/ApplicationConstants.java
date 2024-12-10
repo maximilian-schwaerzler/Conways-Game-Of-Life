@@ -1,5 +1,8 @@
 package at.co.schwaerzler.maximilian;
 
+/**
+ * Utility class for global application constants.
+ */
 public final class ApplicationConstants {
     public static final String LIFE_FILE_HEADER = "#Life 1.06";
     public static final String[] LIFE_106_FILE_EXT = {"life", "lif"};

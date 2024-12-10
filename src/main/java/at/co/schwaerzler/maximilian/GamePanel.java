@@ -19,6 +19,10 @@ import java.nio.file.Path;
 import static at.co.schwaerzler.maximilian.ApplicationConstants.DEFAULT_FILE_EXT;
 import static at.co.schwaerzler.maximilian.ApplicationConstants.LIFE_106_FILE_EXT;
 
+/**
+ * The panel that renders the actual game to the window.
+ * It is also responsible for user input.
+ */
 public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private final int windowSize;
     private final int gameSize;
@@ -38,7 +42,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         cellSize = windowSize / this.gameSize;
         gol = new GameOfLife();
         if (initialState != null) {
-            gol.loadState(initialState.offset(10, 10));
+            // gol.loadState(initialState.offset(10, 10));
             repaint();
         }
 
@@ -110,7 +114,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             togglePause();
         } else if (keyCode == KeyEvent.VK_R) {
             gol.resetGame();
-        } else if (keyCode == KeyEvent.VK_S && e.getModifiersEx() == InputEvent.CTRL_DOWN_MASK) {
+            updateWindow();
+        } else if (keyCode == KeyEvent.VK_S && e.getModifiersEx() == InputEvent.CTRL_DOWN_MASK && isPaused) {
             saveCurrentState();
         }
     }

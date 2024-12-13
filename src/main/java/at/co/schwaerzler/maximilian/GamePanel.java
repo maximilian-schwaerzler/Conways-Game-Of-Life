@@ -16,10 +16,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 
-import static at.co.schwaerzler.maximilian.ApplicationConstants.DEFAULT_FILE_EXT;
-import static at.co.schwaerzler.maximilian.ApplicationConstants.LIFE_106_FILE_EXT;
+import static at.co.schwaerzler.maximilian.ApplicationConstants.*;
 
 /**
  * The panel that renders the actual game to the window.
@@ -128,17 +128,25 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         GameState currentState = gol.getAliveCells();
         JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 
-//        fc.setAcceptAllFileFilterUsed(false);
-        FileNameExtensionFilter life106Filter = new FileNameExtensionFilter("Life 1.06", LIFE_106_FILE_EXT);
+        FileNameExtensionFilter life106Filter = new FileNameExtensionFilter("Life 1.06 (.life, .lif)", LIFE_106_FILE_EXT);
         fc.addChoosableFileFilter(life106Filter);
 
+        FileNameExtensionFilter plaintextFilter = new FileNameExtensionFilter("Plaintext (.cells)", PLAINTEXT_FILE_EXT);
+        fc.addChoosableFileFilter(plaintextFilter);
+
         fc.setFileFilter(life106Filter);
-        int returnVal = fc.showSaveDialog(this);
+        int returnVal = 0;
+        try {
+            returnVal = fc.showSaveDialog(this);
+        } catch (InvalidPathException e) {
+            LOGGER.error(e);
+        }
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
 
             FileFilter usedFileFilter = fc.getFileFilter();
             Path selectedFilePath;
+
             if (FilenameUtils.getExtension(file.getName()).isEmpty()) {
                 if (usedFileFilter instanceof FileNameExtensionFilter) {
                     selectedFilePath = Path.of(file.getAbsolutePath() + "." + ((FileNameExtensionFilter) usedFileFilter).getExtensions()[0]);
@@ -148,11 +156,16 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             } else {
                 selectedFilePath = file.toPath();
             }
+            if (FilenameUtils.getBaseName(selectedFilePath.toString()).isBlank()) {
+                LOGGER.error("Filename was empty");
+                return;
+            }
 
             IStatePersister statePersister = IStatePersister.getPersisterForFileExtension(selectedFilePath);
             if (statePersister == null) {
                 statePersister = new Life106StatePersister();
             }
+            LOGGER.debug("Using {} to save the file", statePersister.getClass().getName());
 
             try {
                 statePersister.saveStateToFile(currentState, selectedFilePath);

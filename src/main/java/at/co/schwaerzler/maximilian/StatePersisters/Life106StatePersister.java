@@ -2,6 +2,9 @@ package at.co.schwaerzler.maximilian.StatePersisters;
 
 import at.co.schwaerzler.maximilian.Cell;
 import at.co.schwaerzler.maximilian.GameState;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,11 +19,14 @@ import static at.co.schwaerzler.maximilian.ApplicationConstants.LIFE_FILE_HEADER
  * A state persister for the <a href="https://conwaylife.com/wiki/Life_1.06">Life 1.06</a> file format.
  */
 public class Life106StatePersister implements IStatePersister {
+    private static final Logger LOGGER = LogManager.getLogger();
+
 
     @Override
-    public void saveStateToFile(GameState state, Path file) throws IOException, IllegalArgumentException {
+    public void saveStateToFile(@NotNull GameState state, Path file) throws IOException, IllegalArgumentException {
         if (state.isEmpty()) {
-            throw new IllegalArgumentException("State is empty, not saving file");
+//            throw new IllegalArgumentException("State is empty, not saving file");
+            LOGGER.warn("State is empty, not saving file");
         }
 
         ArrayList<String> lines = new ArrayList<>(state.size() + 1);

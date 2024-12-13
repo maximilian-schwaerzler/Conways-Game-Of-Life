@@ -2,6 +2,8 @@ package at.co.schwaerzler.maximilian.StatePersisters;
 
 import at.co.schwaerzler.maximilian.GameState;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,6 +12,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 
 import static at.co.schwaerzler.maximilian.ApplicationConstants.LIFE_106_FILE_EXT;
+import static at.co.schwaerzler.maximilian.ApplicationConstants.PLAINTEXT_FILE_EXT;
 
 /**
  * An interface for all kinds of state persisters, a.k.a. saving and loading/parsing of state files.
@@ -22,9 +25,13 @@ public interface IStatePersister {
      * @return The right IStatePersister or null if no persister could be found.
      */
     static @Nullable IStatePersister getPersisterForFileExtension(@NotNull Path file) {
+        final Logger LOGGER = LogManager.getLogger();
         String ext = FilenameUtils.getExtension(file.getFileName().toString()).toLowerCase();
+        LOGGER.debug("File extension: {}", ext);
         if (Arrays.asList(LIFE_106_FILE_EXT).contains(ext)) {
             return new Life106StatePersister();
+        } else if (Arrays.asList(PLAINTEXT_FILE_EXT).contains(ext)) {
+            return new PlaintextStatePersister();
         }
 
         return null;

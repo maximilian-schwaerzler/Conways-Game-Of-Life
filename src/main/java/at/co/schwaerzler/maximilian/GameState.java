@@ -25,6 +25,6 @@ public class GameState extends HashSet<Cell> {
         int minY = Arrays.stream(yCoords).min().orElse(0);
         int maxY = Arrays.stream(yCoords).max().orElse(0);
 
-        return new Rectangle(minX, minY, maxX, maxY);
+        return new Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1);
     }
 }

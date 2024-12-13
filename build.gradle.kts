@@ -19,7 +19,6 @@ dependencies {
 
     implementation(platform("org.apache.logging.log4j:log4j-bom:3.0.0-beta3"))
     runtimeOnly("org.apache.logging.log4j:log4j-core")
-    runtimeOnly("org.apache.logging.log4j:log4j-layout-template-json")
     implementation("org.apache.logging.log4j:log4j-api")
 }
 

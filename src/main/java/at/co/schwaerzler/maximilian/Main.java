@@ -2,6 +2,9 @@ package at.co.schwaerzler.maximilian;
 
 import at.co.schwaerzler.maximilian.StatePersisters.IStatePersister;
 import org.apache.commons.cli.*;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -10,6 +13,7 @@ import java.nio.file.Path;
 import static at.co.schwaerzler.maximilian.ApplicationConstants.*;
 
 public class Main {
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * The entry function to the game. Parses the arguments and maybe loads the initial state.
@@ -80,12 +84,16 @@ public class Main {
                     if (loader != null) {
                         initialState = loader.loadStateFromFile(stateFile);
                     } else {
-                        System.err.println("Could not find the right loader for this file. Did you use the right file extension?");
+//                        System.err.println("Could not find the right loader for this file. Did you use the right file extension?");
+                        LOGGER.error("Could not find the right loader for this file. Did you use the right file extension? (Parsed extension: {})", FilenameUtils.getExtension(stateFile.toString()));
                     }
                 } catch (IllegalArgumentException e) {
-                    System.err.println("Error loading file: " + e.getMessage());
+//                    System.err.println("Error loading file: " + e.getMessage());
+                    LOGGER.error("Error loading file '{}'", stateFile, e);
                 } catch (IOException e) {
-                    System.err.println("Error reading file: " + e.getMessage());
+//                    System.err.println("Error reading file: " + e.getMessage());
+                    LOGGER.error("Error reading file '{}'", stateFile, e);
+
                 }
             }
 
@@ -97,7 +105,8 @@ public class Main {
                 gf.setVisible(true);
             });
         } catch (ParseException e) {
-            System.err.println("Parsing failed. Reason: " + e.getMessage());
+//            System.err.println("Parsing failed. Reason: " + e.getMessage());
+            LOGGER.error("Parsing of state file failed", e);
         }
     }
 }

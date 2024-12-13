@@ -3,6 +3,8 @@ package at.co.schwaerzler.maximilian;
 import at.co.schwaerzler.maximilian.StatePersisters.IStatePersister;
 import at.co.schwaerzler.maximilian.StatePersisters.Life106StatePersister;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,6 +26,7 @@ import static at.co.schwaerzler.maximilian.ApplicationConstants.LIFE_106_FILE_EX
  * It is also responsible for user input.
  */
 public class GamePanel extends JPanel implements MouseListener, KeyListener {
+    private static final Logger LOGGER = LogManager.getLogger();
     private final int windowSize;
     private final int gameSize;
     private final int cellSize;
@@ -121,6 +124,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     }
 
     private void saveCurrentState() {
+        LOGGER.debug("Saving current state");
         GameState currentState = gol.getAliveCells();
         JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 
@@ -152,9 +156,11 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
             try {
                 statePersister.saveStateToFile(currentState, selectedFilePath);
-                System.out.println("Saved state to: " + selectedFilePath);
+//                System.out.println("Saved state to: " + selectedFilePath);
+                LOGGER.info("Saved state to: {}", selectedFilePath);
             } catch (IOException e) {
-                System.err.println("Failed to save the current state to a file: " + e.getMessage());
+//                System.err.println("Failed to save the current state to a file: " + e.getMessage());
+                LOGGER.error("Failed to save the current state to a file", e);
             }
         }
     }

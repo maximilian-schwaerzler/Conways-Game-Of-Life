@@ -7,12 +7,12 @@
 
     <Appenders>
         <Console name="CONSOLE">
-            <JsonTemplateLayout/>
+            <PatternLayout pattern="%-5p [%t]: %m%n"/>
         </Console>
     </Appenders>
 
     <Loggers>
-        <Logger name="at.co.schwaerzler.maximilian" level="INFO"/>
+        <Logger name="at.co.schwaerzler.maximilian" level="DEBUG"/>
         <Root level="WARN">
             <AppenderRef ref="CONSOLE"/>
         </Root>

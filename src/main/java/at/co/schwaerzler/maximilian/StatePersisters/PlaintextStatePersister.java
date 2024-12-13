@@ -5,13 +5,18 @@ import at.co.schwaerzler.maximilian.GameState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
+/**
+ * A state persister for the <a href="https://conwaylife.com/wiki/Plaintext">Plaintext</a> file format
+ */
 public class PlaintextStatePersister implements IStatePersister {
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -42,8 +47,39 @@ public class PlaintextStatePersister implements IStatePersister {
     }
 
     @Override
-    public GameState loadStateFromFile(Path file) throws IOException, IllegalArgumentException {
-        // TODO
-        return null;
+    public @Nullable GameState loadStateFromFile(Path file) throws IOException, IllegalArgumentException {
+        if (Files.notExists(file)) {
+            throw new IllegalArgumentException("The file path does not exist: " + file.toAbsolutePath());
+        }
+
+        GameState newState = new GameState();
+
+        try (BufferedReader bufferedReader = Files.newBufferedReader(file)) {
+            String line;
+            int lineCounter = 0;
+            while ((line = bufferedReader.readLine()) != null) {
+                // Ignore comments
+                if (line.startsWith("!")) continue;
+
+                // Lines with only dead cells are sometimes left blank
+                if (line.isBlank()) {
+                    lineCounter++;
+                    continue;
+                }
+
+                int colCounter = 0;
+                for (char c : line.toCharArray()) {
+                    if (c == 'O') {
+                        newState.add(new Cell(colCounter, lineCounter));
+                    }
+
+                    colCounter++;
+                }
+
+                lineCounter++;
+            }
+        }
+
+        return newState;
     }
 }

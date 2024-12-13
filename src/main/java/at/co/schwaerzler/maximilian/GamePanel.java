@@ -45,7 +45,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         cellSize = windowSize / this.gameSize;
         gol = new GameOfLife();
         if (initialState != null) {
-            // gol.loadState(initialState.offset(10, 10));
+            gol.loadState(initialState);
             repaint();
         }
 

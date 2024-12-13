@@ -5,6 +5,7 @@ import at.co.schwaerzler.maximilian.GameState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class Life106StatePersister implements IStatePersister {
         if (state.isEmpty()) {
 //            throw new IllegalArgumentException("State is empty, not saving file");
             LOGGER.warn("State is empty, not saving file");
+            return;
         }
 
         ArrayList<String> lines = new ArrayList<>(state.size() + 1);
@@ -39,7 +41,7 @@ public class Life106StatePersister implements IStatePersister {
     }
 
     @Override
-    public GameState loadStateFromFile(Path file) throws IOException, IllegalArgumentException {
+    public @Nullable GameState loadStateFromFile(Path file) throws IOException, IllegalArgumentException {
         if (Files.notExists(file)) {
             throw new IllegalArgumentException("The file path does not exist: " + file.toAbsolutePath());
         }
@@ -69,7 +71,9 @@ public class Life106StatePersister implements IStatePersister {
         }
 
         if (newState.isEmpty()) {
-            throw new IOException("File was empty");
+//            throw new IOException("File was empty");
+            LOGGER.error("File {} was empty", file);
+            return null;
         }
 
         return newState;

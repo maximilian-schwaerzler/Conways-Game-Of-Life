@@ -55,5 +55,5 @@ public interface IStatePersister {
      * @throws IOException              e.g. error when opening the file
      * @throws IllegalArgumentException e.g. when it's the wrong file type
      */
-    GameState loadStateFromFile(Path file) throws IOException, IllegalArgumentException;
+    @Nullable GameState loadStateFromFile(Path file) throws IOException, IllegalArgumentException;
 }

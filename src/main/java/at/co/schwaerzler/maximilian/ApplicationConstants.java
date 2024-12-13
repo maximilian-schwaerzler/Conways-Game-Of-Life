@@ -7,9 +7,11 @@ public final class ApplicationConstants {
     public static final String LIFE_FILE_HEADER = "#Life 1.06";
     public static final String[] LIFE_106_FILE_EXT = {"life", "lif"};
 
+    public static final String[] PLAINTEXT_FILE_EXT = {"cells"};
+
     public static final int DEFAULT_GAME_SIZE = 50;
     public static final int DEFAULT_WINDOW_SIZE = 800;
-    public static final String DEFAULT_FILE_EXT = "life";
+    public static final String DEFAULT_FILE_EXT = LIFE_106_FILE_EXT[0];
 
     public static final String GAME_SIZE_ARG_NAME = "game-size";
     public static final String WINDOW_SIZE_ARG_NAME = "window-size";

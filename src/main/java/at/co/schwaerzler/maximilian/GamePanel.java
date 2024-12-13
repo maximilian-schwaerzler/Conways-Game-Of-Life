@@ -18,6 +18,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import static at.co.schwaerzler.maximilian.ApplicationConstants.*;
 
@@ -46,7 +48,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         gol = new GameOfLife();
         if (initialState != null) {
             gol.loadState(initialState);
-            repaint();
+            updateWindow();
         }
 
         gameTickTimer = new Timer(50, _ -> gameTick());
@@ -118,23 +120,77 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         } else if (keyCode == KeyEvent.VK_R) {
             gol.resetGame();
             updateWindow();
-        } else if (keyCode == KeyEvent.VK_S && e.getModifiersEx() == InputEvent.CTRL_DOWN_MASK && isPaused) {
+        } else if (keyCode == KeyEvent.VK_S && e.getModifiersEx() == InputEvent.CTRL_DOWN_MASK) {
+            setIsPaused(true);
             saveCurrentState();
+        } else if (keyCode == KeyEvent.VK_O && e.getModifiersEx() == InputEvent.CTRL_DOWN_MASK) {
+            setIsPaused(true);
+            loadState();
+        }
+    }
+
+    private @NotNull JFileChooser getFileChooserForStateFiles(boolean isOpenChooser) {
+        JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+
+        FileNameExtensionFilter[] filterList = {
+                new FileNameExtensionFilter("Life 1.06 (*.life, *.lif)", LIFE_106_FILE_EXT),
+                new FileNameExtensionFilter("Plaintext (*.cells)", PLAINTEXT_FILE_EXT)
+        };
+
+        for (FileNameExtensionFilter filter : filterList) {
+            fc.addChoosableFileFilter(filter);
+        }
+
+
+        if (isOpenChooser) {
+            ArrayList<String> allExtensions = new ArrayList<>();
+            for (FileNameExtensionFilter filter : filterList) {
+                Collections.addAll(allExtensions, filter.getExtensions());
+            }
+            String desc = "All available formats (" + String.join(", ", allExtensions.stream().map(ext -> "*." + ext).toList()) + ")";
+            FileNameExtensionFilter allExtensionsFilter = new FileNameExtensionFilter(desc, allExtensions.toArray(new String[0]));
+            fc.addChoosableFileFilter(allExtensionsFilter);
+            fc.setFileFilter(allExtensionsFilter);
+        } else {
+            fc.setFileFilter(filterList[0]);
+        }
+
+        return fc;
+    }
+
+    private void loadState() {
+        JFileChooser fc = getFileChooserForStateFiles(true);
+        int returnVal = 0;
+        try {
+            returnVal = fc.showOpenDialog(this);
+        } catch (InvalidPathException e) {
+            LOGGER.error(e);
+        }
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            Path file = fc.getSelectedFile().toPath();
+            IStatePersister stateLoader = IStatePersister.getPersisterForFileExtension(file);
+            if (stateLoader != null) {
+                try {
+                    GameState newState = stateLoader.loadStateFromFile(file);
+                    gol.loadState(newState);
+                    updateWindow();
+                } catch (IllegalArgumentException e) {
+                    LOGGER.error("Error loading file '{}'", file, e);
+                } catch (IOException e) {
+                    LOGGER.error("Error reading file '{}'", file, e);
+                }
+            } else {
+                LOGGER.error("Could not find the right loader for this file. Did you use the right file extension? (Parsed extension: {})", FilenameUtils.getExtension(file.toString()));
+            }
         }
     }
 
     private void saveCurrentState() {
         LOGGER.debug("Saving current state");
         GameState currentState = gol.getAliveCells();
-        JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 
-        FileNameExtensionFilter life106Filter = new FileNameExtensionFilter("Life 1.06 (.life, .lif)", LIFE_106_FILE_EXT);
-        fc.addChoosableFileFilter(life106Filter);
-
-        FileNameExtensionFilter plaintextFilter = new FileNameExtensionFilter("Plaintext (.cells)", PLAINTEXT_FILE_EXT);
-        fc.addChoosableFileFilter(plaintextFilter);
-
-        fc.setFileFilter(life106Filter);
+        JFileChooser fc = getFileChooserForStateFiles(false);
         int returnVal = 0;
         try {
             returnVal = fc.showSaveDialog(this);
@@ -169,10 +225,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
             try {
                 statePersister.saveStateToFile(currentState, selectedFilePath);
-//                System.out.println("Saved state to: " + selectedFilePath);
                 LOGGER.info("Saved state to: {}", selectedFilePath);
             } catch (IOException e) {
-//                System.err.println("Failed to save the current state to a file: " + e.getMessage());
                 LOGGER.error("Failed to save the current state to a file", e);
             }
         }

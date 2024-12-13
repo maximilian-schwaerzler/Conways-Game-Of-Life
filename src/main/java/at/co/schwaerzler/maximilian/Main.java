@@ -84,14 +84,11 @@ public class Main {
                     if (loader != null) {
                         initialState = loader.loadStateFromFile(stateFile);
                     } else {
-//                        System.err.println("Could not find the right loader for this file. Did you use the right file extension?");
                         LOGGER.error("Could not find the right loader for this file. Did you use the right file extension? (Parsed extension: {})", FilenameUtils.getExtension(stateFile.toString()));
                     }
                 } catch (IllegalArgumentException e) {
-//                    System.err.println("Error loading file: " + e.getMessage());
                     LOGGER.error("Error loading file '{}'", stateFile, e);
                 } catch (IOException e) {
-//                    System.err.println("Error reading file: " + e.getMessage());
                     LOGGER.error("Error reading file '{}'", stateFile, e);
 
                 }
@@ -105,7 +102,6 @@ public class Main {
                 gf.setVisible(true);
             });
         } catch (ParseException e) {
-//            System.err.println("Parsing failed. Reason: " + e.getMessage());
             LOGGER.error("Parsing of state file failed", e);
         }
     }

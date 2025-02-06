@@ -10,8 +10,8 @@ public class GameOfLife {
 
     private static @NotNull GameState getNeighbors(int x, int y) {
         GameState neighbors = new GameState();
-        for (int j = -1; j < 2; j++) {
-            for (int i = -1; i < 2; i++) {
+        for (int j = -1; j <= 1; j++) {
+            for (int i = -1; i <= 1; i++) {
                 if (i == 0 && j == 0) {
                     continue;
                 }

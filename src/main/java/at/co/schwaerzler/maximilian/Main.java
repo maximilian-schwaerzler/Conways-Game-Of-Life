@@ -16,7 +16,7 @@ public class Main {
     private static final Logger LOGGER = LogManager.getLogger();
 
     /**
-     * The entry function to the game. Parses the arguments and maybe loads the initial state.
+     * The entry function to the game. Parse the arguments and maybe load the initial state.
      *
      * @param args The command line arguments. Very important, do not delete.
      */

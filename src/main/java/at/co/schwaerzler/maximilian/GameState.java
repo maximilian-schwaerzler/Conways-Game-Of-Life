@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 /**
- * A custom hash set of cells for holding the game state
+ * A custom hash set of cells for representing the game state
  */
 public class GameState extends HashSet<Cell> {
     public GameState offset(int deltaX, int deltaY) {

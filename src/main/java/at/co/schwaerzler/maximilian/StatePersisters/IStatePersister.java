@@ -30,10 +30,13 @@ public interface IStatePersister {
         LOGGER.debug("File extension: {}", ext);
         if (Arrays.asList(LIFE_106_FILE_EXT).contains(ext)) {
             return new Life106StatePersister();
-        } else if (Arrays.asList(PLAINTEXT_FILE_EXT).contains(ext)) {
+        }
+
+        if (Arrays.asList(PLAINTEXT_FILE_EXT).contains(ext)) {
             return new PlaintextStatePersister();
         }
 
+        // No matching persister found
         return null;
     }
 
